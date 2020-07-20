@@ -20,10 +20,12 @@
 \usepackage{cite}
 \usepackage{amsmath,amsfonts,amssymb,mathrsfs}
 
-\IEEEoverridecommandlockouts
+% \IEEEoverridecommandlockouts
 
 \newcommand{\revise}{\color{black}}
 \newcommand{\revisesec}{\color{blue}}
+\newcommand{\fixit}[1]{{\leavevmode\color{red}(#1)}}
+\newcommand{\comments}[1]{{\leavevmode\color{blue}#1}}
 
 \newtheorem{Definition}{Definition}
 \newtheorem{Problem}{Problem}
@@ -44,29 +46,41 @@
 
 \begin{document}
 	
-\title{System Model}
-
-\author{}
-\thanks{}
-
-\maketitle
-
-\begin{abstract}
-	
-\end{abstract}
-
-\begin{IEEEkeywords}
-
-\end{IEEEkeywords}
-
-\IEEEpeerreviewmaketitle
+	\title{
+		Joint Resource Scheduling for Heterogeneous Tasks in 5G C-RAN
+	}
+	\author{
+        \IEEEauthorblockN{
+            Yifei Sun,
+            Yuncong Hong%,
+            % Rui Wang,
+            % Haisheng Tan,
+            % Francis C.M. Lau
+        }
+        % \IEEEauthorblockA{\IEEEauthorrefmark{1}
+        %     Department of Electrical and Electronic Engineering, Southern University of Science and Technology, Shenzhen, China \\
+        % }
+        % \IEEEauthorblockA{\IEEEauthorrefmark{2}
+        %     Department of Computer Science, The University of Hong Kong, Hong Kong, China \\
+        % }
+        % \IEEEauthorblockA{\IEEEauthorrefmark{3}
+        %     LINKE Lab, University of Science and Technology of China, Hefei, China \\
+        % }
+    }%
+	\maketitle
 
 \section{Introduction}
-In this paper, we consider a MEC scenario with C-RAN architechure. Based on network function virtualization (NFV), the communication computation function and service computation function can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) respectively on general-purposed processors.
+	\begin{enumerate}
+		\item C-RAN is the future, where functions of BBUs are implemented in centralized and virtualized way;
+		\item 
+	\end{enumerate}
+
+	In this paper, we consider a MEC scenario with C-RAN architecture.
+	Based on network function virtualization (NFV), the communication computation function and service computation function can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) respectively on general-purposed processors.
 
 \section{System Model}
 \subsection{Network Model}
-As illustrated in Fig.X, we consider the network including $N$ RRHs and one edge cloud with $M$ servers. Each RRH serves a region $\mathcal{C}_{i}$ where mobile devices with data tasks (DTs) or computation tasks (CTs) randomly arrived. We ignore the backhaul transmission time. After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
+As illustrated in Fig., we consider the network including $N$ RRHs and one edge cloud with $M$ servers. Each RRH serves a region $\mathcal{C}_{i}$ where mobile devices with data tasks (DTs) or computation tasks (CTs) randomly arrived. We ignore the backhaul transmission time. After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
 
 \begin{figure}[tb]
 	\centering
@@ -181,7 +195,6 @@ The cost function in the $t$-th frame is given by
 
 
 \appendices
-\section*{Acknowledgment}
 \bibliographystyle{IEEEtran}
 \bibliography{C-RAN_and_MEC}
 

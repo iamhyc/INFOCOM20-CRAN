@@ -26,6 +26,7 @@
 \newcommand{\revisesec}{\color{blue}}
 \newcommand{\fixit}[1]{{\leavevmode\color{red}(#1)}}
 \newcommand{\comments}[1]{{\leavevmode\color{blue}#1}}
+\newcommand{\deny}[1]{}
 
 \newtheorem{Definition}{Definition}
 \newtheorem{Problem}{Problem}
@@ -47,7 +48,7 @@
 \begin{document}
 	
 	\title{
-		Joint Resource Scheduling for Heterogeneous Tasks in 5G C-RAN
+		Joint Resource Scheduling for \deny{Heterogeneous} Communication and Computation Tasks in 5G C-RAN
 	}
 	\author{
         \IEEEauthorblockN{
@@ -71,16 +72,19 @@
 
 \section{Introduction}
 	\begin{enumerate}
-		\item C-RAN is the future, where functions of BBUs are implemented in centralized and virtualized way;
+		\item C-RAN is the future, where functions of BBUs are implemented in a centralized and virtualized way;
 		\item 
 	\end{enumerate}
 
-	In this paper, we consider a MEC scenario with C-RAN architecture.
-	Based on network function virtualization (NFV), the communication computation function and service computation function can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) respectively on general-purposed processors.
+	In this paper, we consider a MEC scenario with C-RAN architecture,
+	%Based on network function virtualization (NFV), 
+	where the communication data processing tasks (DTs) and general computation tasks (CTs) can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) on general-purposed processors, respectively.
 
 \section{System Model}
 \subsection{Network Model}
-As illustrated in Fig., we consider the network including $N$ RRHs and one edge cloud with $M$ servers. Each RRH serves a region $\mathcal{C}_{i}$ where mobile devices with data tasks (DTs) or computation tasks (CTs) randomly arrived. We ignore the backhaul transmission time. After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
+% The time axis of dispatching is organized by time slots.
+The system is scheduled with the minimum time unit called \emph{frame}.
+As illustrated in Fig.1, we consider the network including $N$ RRHs and one edge cloud with $M$ servers. Each RRH serves a region $\mathcal{C}_{i}$ where mobile devices with data tasks (DTs) or computation tasks (CTs) randomly arrived. We ignore the backhaul transmission time. After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
 
 \begin{figure}[tb]
 	\centering

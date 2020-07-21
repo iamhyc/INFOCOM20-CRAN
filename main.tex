@@ -1,4 +1,4 @@
-\documentclass[12pt, draftclsnofoot, onecolumn]{IEEEtran}
+\documentclass[journal, 12pt, onecolumn, draftclsnofoot]{IEEEtran}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -12,13 +12,15 @@
 \usepackage{extarrows}
 \usepackage{graphicx} 
 \usepackage{graphics}
-\usepackage{stfloats}
-\usepackage{subfigure}
-\usepackage{setspace}
-\usepackage{bm}
-\usepackage{xparse}
-\usepackage{cite}
 \usepackage{amsmath,amsfonts,amssymb,mathrsfs}
+\usepackage{mathtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{dcolumn}
+\usepackage[utf8]{inputenc}
+\usepackage{soul}
+\usepackage{array}
+\usepackage{tabulary}
+
 
 % \IEEEoverridecommandlockouts
 
@@ -27,7 +29,27 @@
 \newcommand{\fixit}[1]{{\leavevmode\color{red}(#1)}}
 \newcommand{\comments}[1]{{\leavevmode\color{blue}#1}}
 \newcommand{\deny}[1]{}
-
+\newcommand{\needref}[1]{\text{[#1]}}
+%---------------------------------------------------------------%
+\newcommand{\eq}{=}
+\newcommand{\domZ}{\mathbb{Z}_{*}}
+\newcommand{\domP}{\mathbb{Z}_{*}}
+\newcommand{\vecOne}{\mathbf{1}}
+\newcommand{\ind}{\mathbf{I}}
+\newcommand{\mat}{\mathbf}
+\newcommand{\Poisson}{\text{Poisson}}
+\newcommand{\Bernoulli}{\text{Bernoulli}}
+\newcommand{\define}{\triangleq}
+\newcommand{\leadto}{\Rightarrow}
+\newcommand{\vecG}{\boldsymbol}
+\renewcommand{\vec}{\mathbf}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\norm}{|}{|}
+\DeclarePairedDelimiter{\Inorm}{\|}{\|_1}
+\DeclarePairedDelimiter{\Paren}{\bigg(}{\bigg)}
+\DeclarePairedDelimiter{\Bracket}{\bigg[}{\bigg]}
+\DeclarePairedDelimiter{\Brace}{\bigg\{}{\bigg\}}
+%---------------------------------------------------------------%
 \newtheorem{Definition}{Definition}
 \newtheorem{Problem}{Problem}
 \newtheorem{Lemma}{Lemma}
@@ -73,7 +95,9 @@
 \section{Introduction}
 	\begin{enumerate}
 		\item C-RAN is the future, where functions of BBUs are implemented in a centralized and virtualized way;
-		\item 
+		\item \fixit{Two concerns are not checked yet: a) how to assess resource requirement and evaluate tolerance of DT task? b) }
+		\item In this paper, we propose a novel framework where both BBU tasks and general edge computing tasks are processed simultaneously in a homogeneous edge cloud with general-purposed processors.
+		\item By applying resource split between vBBU and vMC, the resource split between DT and CT is implemented. \fixit{So, why not just split computation resource for DT and CT?} 
 	\end{enumerate}
 
 	In this paper, we consider a MEC scenario with C-RAN architecture,
@@ -81,19 +105,28 @@
 	where the communication data processing tasks (DTs) and general computation tasks (CTs) can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) on general-purposed processors, respectively.
 
 \section{System Model}
-\subsection{Network Model}
-% The time axis of dispatching is organized by time slots.
-The system is scheduled with the minimum time unit called \emph{frame}.
-As illustrated in Fig.1, we consider the network including $N$ RRHs and one edge cloud with $M$ servers. Each RRH serves a region $\mathcal{C}_{i}$ where mobile devices with data tasks (DTs) or computation tasks (CTs) randomly arrived. We ignore the backhaul transmission time. After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
-
 \begin{figure}[tb]
 	\centering
 	\includegraphics[scale = 0.1]{fig/scenario.jpg}
 	\caption{Network Model.}
 	\label{fig:scenario}
 \end{figure}
+% \comments{One illustration of the network is given in Fig.1.}
+There are $I$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{I}=\set{1,\dots,I}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
+Each serves the mobile devices (MDs) in its coverage denoted as $\mathcal{C}_{i}$ and has a fronthaul connection to one virtualized BBU (vBBU) in one edge cloud.
+Furthermore, we assume that each edge cloud consists of fixed $N$ virtual machines (VMs).
 
-As in \cite{}, we use the concept, $\textit{active devices}$, to name the mobile devices with computation tasks. The uplink transmission and computation are scheduled in frames, each with duration $T_{\mathrm{F}}$. In each frame, there is at most one active device arrived in each cell with probability $P_{i}^{\mathrm{N}}$. And the probability that an active device arrived in region $\mathcal{C}'$ is
+% The time axis of dispatching is organized by time slots.
+The system is scheduled with the minimum time unit called \emph{frame}.
+In the $t$-th frame, there could be at most one MD in $\mathcal{C}_{i}$ start to transmit data via the $i$-th RRH to edge clouds $\mathcal{M}$ for further processing.
+There are two types of data which would incur two types of tasks in our system.
+One is called data task (DT), $\dots$.
+The other is called computation task (CT), $\dots$. 
+% We use the concept, \emph{active devices}, to name the mobile devices with computation tasks.
+randomly arrived.
+% After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
+
+The uplink transmission and computation are scheduled in frames, each with duration $T_{\mathrm{F}}$. In each frame, there is at most one active device arrived in each cell with probability $P_{i}^{\mathrm{N}}$. And the probability that an active device arrived in region $\mathcal{C}'$ is
 \begin{align}
 	\mathrm{Pr}[\text{New active device in region }\mathcal{C}']=\int_{\mathcal{C}'}\lambda(\mathbf{l})ds(\mathbf{l}),\forall \mathcal{C}'\subset\mathcal{C}_{i}.
 \end{align}
@@ -140,7 +173,7 @@ where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
 
 There are two buffers in the edge cloud for each active device. One is the buffer of vBBU pool for communication computation (measured in packets) and the other is the buffer of vMES for service computation (measured in frames), which are denoted as $Q_{k}^{\mathrm{B}}(t)$ and $Q_{k}^{\mathrm{C}}(t)$ respectively.
 
-As in \cite{6582405} and \cite{8353131}, we assume that each server creates $M$ containers and the limited computation capacity of each server is fairly allocated to its hosted containers eahc with computation resource $f$. The $i$-th container on each server can only perform communication computation or service computation for the tasks of the $i$-th cell. Let the $(s,i)$-th container denotes the $i$-th container on the $s$-th server. The $(s,i)$-th container can be either $\textit{running}$ state or $\textit{shutdown}$ state. When the $(s,i)$-th container is running in a certain frame, it can perform either communication computation or service computation for one certain task of the $i$-th cell. Denote $a_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is $\textit{running}$ state for the communication task of the $k$-th task and is $0$ otherwise. Denote $b_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is starting to $\textit{running}$ state for service computation of the $k$-th task and $0$ otherwise. As in \cite{}, we assume that the service computation of each task need to be performed in consecutive frames and introduce the binary state $b_{s,i,k}^{-}(t)$ which indicates that the $(s,i)$-th container is still $\textit{running}$ state before the $t$-th frame and $0$ otherwise. Therefore, once $b_{s,i,k}(t)=1$, then $b_{s,i,k}^{-}(t+\tau)=1$, $\tau=1,\ldots,F_{k}-1$.
+As in \needref{6582405} and \needref{8353131}, we assume that each server creates $M$ containers and the limited computation capacity of each server is fairly allocated to its hosted containers each with computation resource $f$. The $i$-th container on each server can only perform communication computation or service computation for the tasks of the $i$-th cell. Let the $(s,i)$-th container denotes the $i$-th container on the $s$-th server. The $(s,i)$-th container can be either $\textit{running}$ state or $\textit{shutdown}$ state. When the $(s,i)$-th container is running in a certain frame, it can perform either communication computation or service computation for one certain task of the $i$-th cell. Denote $a_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is $\textit{running}$ state for the communication task of the $k$-th task and is $0$ otherwise. Denote $b_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is starting to $\textit{running}$ state for service computation of the $k$-th task and $0$ otherwise. As in \cite{}, we assume that the service computation of each task need to be performed in consecutive frames and introduce the binary state $b_{s,i,k}^{-}(t)$ which indicates that the $(s,i)$-th container is still $\textit{running}$ state before the $t$-th frame and $0$ otherwise. Therefore, once $b_{s,i,k}(t)=1$, then $b_{s,i,k}^{-}(t+\tau)=1$, $\tau=1,\ldots,F_{k}-1$.
 
 \begin{align}
 	b_{s,i,k}(t)=

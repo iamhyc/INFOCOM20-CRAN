@@ -1,4 +1,5 @@
 \documentclass[journal, 12pt, onecolumn, draftclsnofoot]{IEEEtran}
+% \documentclass[10pt,conference]{IEEEtran} %INFOCOM 20'
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -20,7 +21,7 @@
 \usepackage{soul}
 \usepackage{array}
 \usepackage{tabulary}
-
+\graphicspath{ {./images/} }
 
 % \IEEEoverridecommandlockouts
 
@@ -100,12 +101,12 @@
 	\item By applying resource split between vBBU and vMC, the resource split between DT and CT is implemented. \fixit{So, why not just split computation resource for DT and CT?} 
 \end{enumerate}
 
-\begin{figure}[htb!]
+\begin{figure*}[htb!]
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/cran-system-model.pdf}
 	\caption{The Illustration of System Model.}
 	\label{fig:scenario}
-\end{figure}
+\end{figure*}
 
 In this paper, we consider a MEC scenario with C-RAN architecture,
 %Based on network function virtualization (NFV), 

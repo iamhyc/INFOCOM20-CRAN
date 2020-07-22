@@ -93,83 +93,87 @@
 	\maketitle
 
 \section{Introduction}
-	\begin{enumerate}
-		\item C-RAN is the future, where functions of BBUs are implemented in a centralized and virtualized way;
-		\item \fixit{Two concerns are not checked yet: a) how to assess resource requirement and evaluate tolerance of DT task? b) }
-		\item In this paper, we propose a novel framework where both BBU tasks and general edge computing tasks are processed simultaneously in a homogeneous edge cloud with general-purposed processors.
-		\item By applying resource split between vBBU and vMC, the resource split between DT and CT is implemented. \fixit{So, why not just split computation resource for DT and CT?} 
-	\end{enumerate}
+\begin{enumerate}
+	\item C-RAN is the future, where functions of BBUs are implemented in a centralized and virtualized way;
+	\item \fixit{Two concerns are not checked yet: a) how to assess resource requirement and evaluate tolerance of DT task? b) }
+	\item In this paper, we propose a novel framework where both BBU tasks and general edge computing tasks are processed simultaneously in a homogeneous edge cloud with general-purposed processors.
+	\item By applying resource split between vBBU and vMC, the resource split between DT and CT is implemented. \fixit{So, why not just split computation resource for DT and CT?} 
+\end{enumerate}
 
-	In this paper, we consider a MEC scenario with C-RAN architecture,
-	%Based on network function virtualization (NFV), 
-	where the communication data processing tasks (DTs) and general computation tasks (CTs) can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) on general-purposed processors, respectively.
-
-\section{System Model}
-\begin{figure}[tb]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[scale = 0.1]{fig/scenario.jpg}
 	\caption{Network Model.}
 	\label{fig:scenario}
 \end{figure}
-% \comments{One illustration of the network is given in Fig.1.}
+
+In this paper, we consider a MEC scenario with C-RAN architecture,
+%Based on network function virtualization (NFV), 
+where the communication data processing tasks (DTs) and general computation tasks (CTs) can be implemented by virtual BBUs (vBBUs) and virtual MEC servers (vMESs) on general-purposed processors, respectively.
+%-----------------------------------------------------------------------------------------%
+
+\section{System Model}
+\subsection{Network Model}
 There are $I$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{I}=\set{1,\dots,I}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
 Each serves the mobile devices (MDs) in its coverage denoted as $\mathcal{C}_{i}$ and has a fronthaul connection to one virtualized BBU (vBBU) in one edge cloud.
 Furthermore, we assume that each edge cloud consists of fixed $N$ virtual machines (VMs).
 
 % The time axis of dispatching is organized by time slots.
 The system is scheduled with the minimum time unit called \emph{frame}.
-In the $t$-th frame, there could be at most one MD in $\mathcal{C}_{i}$ start to transmit data via the $i$-th RRH to edge clouds $\mathcal{M}$ for further processing.
-There are two types of data which would incur two types of tasks in our system.
-One is called data task (DT), $\dots$.
-The other is called computation task (CT), $\dots$. 
+In the $t$-th frame, there could be at most one MD in $\mathcal{C}_{i}$ starting to transmit data via the $i$-th RRH to edge clouds $\mathcal{M}$ for further processing.
+There are two types of data which would incur two types of tasks, respectively, in the system.
+One is called data task (DT), $\dots$, whose average arrival rate is denoted as $\lambda_{0}$.
+The other is called computation task (CT), $\dots$, whose average arrival rate is denoted as $\lambda_{j}, \forall j\in\mathcal{J}, \mathcal{J} \define \set{1,\dots,j}$. 
 % We use the concept, \emph{active devices}, to name the mobile devices with computation tasks.
-randomly arrived.
 % After uplink transmission, DT only need to be assigned vBBU to perform communication computation, while CT needs to be assigned both vBBU and vMES to perform communication computation and service computation.
+% The uplink transmission and computation are scheduled in frames, each with duration $T_{\mathrm{F}}$.
+% In each frame, there is at most one active mobile device appears in each cell with probability $P_{i}^{\mathrm{N}}$. And the probability that an active device arrived in region $\mathcal{C}'$ is
+% \begin{align}
+% 	\mathrm{Pr}[\text{New active device in region }\mathcal{C}']=\int_{\mathcal{C}'}\lambda(\mathbf{l})ds(\mathbf{l}),\forall \mathcal{C}'\subset\mathcal{C}_{i}.
+% \end{align}
+% where $\lambda(\mathbf{l})$ is the probability density of the active device arrived in arbitrary location in the cell region $\mathbf{l}\in\mathcal{C}_{i}$ and $\int_{\mathcal{C}_{i}}\lambda(\mathbf{l})ds(\mathbf{l})=1$. It is assumed that the location of each active device is quasi-static during the period from it arrives to it completes the uplink transmission of the whole task. The active device becomes \textit{inactive} once the edge cloud finishes computing the whole task. Moreover, due to the small data size of the computation output, the downlink latency of the computation output is ignored.
+% Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived.
+% If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
+The incurred type-$j$ task in the $i$-th cell in the $t$-th frame is described generally by a tuple $u_{i}(t) \define \big( j, D_{i}(t), F_{i}(t) \big)$, where $j$ denotes the job type, $D_{i}(t)$ denotes the input data bits and $F_{i}(t)$ denotes the \emph{deterministic} computation time on the vMESs.
+Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{i}(t)=0$ ($\forall t$).
 
-The uplink transmission and computation are scheduled in frames, each with duration $T_{\mathrm{F}}$. In each frame, there is at most one active device arrived in each cell with probability $P_{i}^{\mathrm{N}}$. And the probability that an active device arrived in region $\mathcal{C}'$ is
+Let $\rho_{i,\tau}(t)$ denotes the indictor for whether the task appeared in the $\tau$-th frame in the $i$-th cell is in uploading or not.
+%FIXME: 
+For uplink transmission, the received signal at the $i$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
 \begin{align}
-	\mathrm{Pr}[\text{New active device in region }\mathcal{C}']=\int_{\mathcal{C}'}\lambda(\mathbf{l})ds(\mathbf{l}),\forall \mathcal{C}'\subset\mathcal{C}_{i}.
+	y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
 \end{align}
-where $\lambda(\mathbf{l})$ is the probability density of the active device arrived in arbitrary location in the cell region $\mathbf{l}\in\mathcal{C}_{i}$ and $\int_{\mathcal{C}_{i}}\lambda(\mathbf{l})ds(\mathbf{l})=1$. It is assumed that the location of each active device is quasi-static during the period from it arrives to it completes the uplink transmission of the whole task. The active device becomes \textit{inactive} once the edge cloud finishes computing the whole task. Moreover, due to the small data size of the computation output, the downlink latency of the computation output is ignored.
-
-Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived. If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
+where $\sqrt{\rho_{j,i,k}}$ denotes the pathloss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
+Then the signal-to-interference-plus-noise ratio (SINR) can be expressed by
+\begin{align}
+	\gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},
+\end{align}
+Thus, the achievable rate for the $k$-th user is given by
+\begin{align}
+	r_{k}(t)= W\cdot \text{log}(1+\gamma_{k}(t)), \forall k,
+\end{align}
+where $W$ is the bandwidth.
+The dynamics of the $k$-th transmission queue is given by
+\begin{align}
+	Q_{k}^{\mathrm{Tr}}(t+1)=(Q_{k}^{\mathrm{Tr}}(t)-D_{k}^{\mathrm{Tr}}(t))^{+}
+\end{align}
+where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
+Let ${U}_{i}(t)$ denote the existing tasks in the $i$-th cell in the $t$-th frame
 \begin{align}
 	\mathcal{U}_{i}(t+1)= \mathcal{U}_{i}(t)\cup\{n_{i,t}\}/\mathcal{D}_{i}(t).
 \end{align}
 
-\subsection{Computation Task and Queueing Models}
+\subsection{Task Computing Models}
 Each new active device has a computation-intensive task which needs to be transmitted to the edge cloud for computation. It is assumed that the task of the $k$-th new active device is represented as $u_{k}=(F_{k},D_{k})$, where $F_{k}$ denotes the total number of frames to be completed and $D_{k}$ denotes the total data size of the task input.
 
-The queueing model is illustrated in Fig.X. The buffer at each active device stores the data packets to be transmitted to its corresponding RRH. The packet size is ${N_\mathrm{b}}$ bits. Then the transmission queue in the $n_{i,t}$-th user and the queue of service computation is given by
+The queueing model is illustrated in Fig.1.
+The buffer at each active device stores the data packets to be transmitted to its corresponding RRH. The packet size is ${N_\mathrm{b}}$ bits. Then the transmission queue in the $n_{i,t}$-th user and the queue of service computation is given by
 \begin{align}
 	Q_{n_{i,t}}^{\mathrm{Tr}}(t+1)=\left\lfloor\frac{D_{k}}{N_\mathrm{b}}\right\rfloor,
 \end{align}
 \begin{align}
 	Q_{n_{i,t}}^{\mathrm{C}}(t+1)=F_{k}.
 \end{align}
-
-For uplink transmission, the received signal at the $i$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
-\begin{align}
-	y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
-\end{align}
-where $\sqrt{\rho_{j,i,k}}$ denotes the pathloss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
-
-Then the signal-to-interference-plus-noise ratio (SINR) can be expressed by
-\begin{align}
-	\gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},
-\end{align}
-
-Thus, the achievable rate for the $k$-th user is given by
-\begin{align}
-	r_{k}(t)= W\cdot \text{log}(1+\gamma_{k}(t)), \forall k,
-\end{align}
-where $W$ is the bandwidth.
-
-The dynamics of the $k$-th transmission queue is given by
-\begin{align}
-	Q_{k}^{\mathrm{Tr}}(t+1)=(Q_{k}^{\mathrm{Tr}}(t)-D_{k}^{\mathrm{Tr}}(t))^{+}
-\end{align}
-where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
 
 There are two buffers in the edge cloud for each active device. One is the buffer of vBBU pool for communication computation (measured in packets) and the other is the buffer of vMES for service computation (measured in frames), which are denoted as $Q_{k}^{\mathrm{B}}(t)$ and $Q_{k}^{\mathrm{C}}(t)$ respectively.
 

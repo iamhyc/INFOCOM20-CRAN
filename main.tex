@@ -95,15 +95,15 @@
 \section{Introduction}
 \begin{enumerate}
 	\item C-RAN is the future, where functions of BBUs are implemented in a centralized and virtualized way;
-	\item \fixit{Two concerns are not checked yet: a) how to assess resource requirement and evaluate tolerance of DT task? b) }
+	\item \fixit{Two concerns are not checked yet: a) how to assess resource requirement and evaluate tolerance of DT task? b) how to queue and perform selection action? }
 	\item In this paper, we propose a novel framework where both BBU tasks and general edge computing tasks are processed simultaneously in a homogeneous edge cloud with general-purposed processors.
 	\item By applying resource split between vBBU and vMC, the resource split between DT and CT is implemented. \fixit{So, why not just split computation resource for DT and CT?} 
 \end{enumerate}
 
 \begin{figure}[htb!]
 	\centering
-	\includegraphics[scale = 0.1]{fig/scenario.jpg}
-	\caption{Network Model.}
+	\includegraphics[width=0.9\textwidth]{images/cran-system-model.pdf}
+	\caption{The Illustration of System Model.}
 	\label{fig:scenario}
 \end{figure}
 
@@ -134,11 +134,11 @@ The other is called computation task (CT), $\dots$, whose average arrival rate i
 % where $\lambda(\mathbf{l})$ is the probability density of the active device arrived in arbitrary location in the cell region $\mathbf{l}\in\mathcal{C}_{i}$ and $\int_{\mathcal{C}_{i}}\lambda(\mathbf{l})ds(\mathbf{l})=1$. It is assumed that the location of each active device is quasi-static during the period from it arrives to it completes the uplink transmission of the whole task. The active device becomes \textit{inactive} once the edge cloud finishes computing the whole task. Moreover, due to the small data size of the computation output, the downlink latency of the computation output is ignored.
 % Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived.
 % If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
-The incurred type-$j$ task in the $i$-th cell in the $t$-th frame is described generally by a tuple $u_{i}(t) \define \big( j, D_{i}(t), F_{i}(t) \big)$, where $j$ denotes the job type, $D_{i}(t)$ denotes the input data bits and $F_{i}(t)$ denotes the \emph{deterministic} computation time on the vMESs.
+The incurred type-$j$ task in the $i$-th cell in the $t$-th frame is described generally by a tuple $u_{i}(t) \define \big( j(t), D_{i}(t), F_{i}(t) \big)$, where $j(t)$ denotes the job type, $D_{i}(t)$ denotes the input data bits and $F_{i}(t)$ denotes the \emph{deterministic} computation time on the vMESs.
 Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{i}(t)=0$ ($\forall t$).
 
 Let $\rho_{i,\tau}(t)$ denotes the indictor for whether the task appeared in the $\tau$-th frame in the $i$-th cell is in uploading or not.
-%FIXME: 
+%FIXME: integrate uploading with above indicator
 For uplink transmission, the received signal at the $i$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
 \begin{align}
 	y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)

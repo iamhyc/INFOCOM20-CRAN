@@ -1,0 +1,24 @@
+\section{Problem Formulation}
+\label{sec:formulation}
+
+The system state in the $t$-th frame is defined by \\
+$\mathbf{S}_{t}=\{\rho_{i,j,k},h_{i,j,k}(t),Q_{k}^{\mathrm{Tr}}(t),Q_{k}^{\mathrm{B}}(t),Q_{k}^{\mathrm{C}}(t),a_{s,i}(t),b_{s,i}(t)\}$
+
+The scheduling policy in the $t$-th frame is defined by $\mathbf{\Omega}(\mathbf{S}_{t})=\{p_{i,k}^{\mathrm{Tr}}(t),d_{s,i,k}\}$
+
+The cost function in the $t$-th frame is given by
+\begin{align}
+	g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))=\sum_{i}|\mathcal{U}_{i}(t)|+\omega_{\mathrm{p}}\bigg(\sum_{i}p_{i,k}^{\mathrm{Tr}}(t)+\sum_{s}p_{s}(t)\bigg)
+\end{align}
+
+\begin{align}
+	\bar{G}(\mathbf{S},\mathbf{\Omega})=\lim_{T\to\infty}\mathbb{E}_{\{\mathbf{S}_{t}^{\mathrm{N}},\mathcal{H}_{\mathrm{E}}(t)|\forall t\}}\left[\sum_{t=1}^{T}\gamma^{t-1}g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))|\mathbf{S}_{1}=\mathbf{S}\right]
+\end{align}
+
+\begin{align}
+	\mathbf{\Omega}^{*}=\mathop{\arg\min}_{\mathbf{\Omega}}\bar{G}(\mathbf{S},\mathbf{\Omega})
+\end{align}
+
+\begin{align}
+	V(\mathbf{S}_{t})=\min_{\mathbf{\Omega}(\mathbf{S}_{t})}\left[g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))+\sum_{\mathbf{S}_{t+1}}\gamma\Pr(\mathbf{S}_{t+1}|\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))V(\mathbf{S}_{t+1})\right]
+\end{align}

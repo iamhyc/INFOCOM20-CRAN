@@ -1,24 +1,52 @@
 \section{Problem Formulation}
 \label{sec:formulation}
 
-The system state in the $t$-th frame is defined by \\
-$\mathbf{S}_{t}=\{\rho_{i,j,k},h_{i,j,k}(t),Q_{k}^{\mathrm{Tr}}(t),Q_{k}^{\mathrm{B}}(t),Q_{k}^{\mathrm{C}}(t),a_{s,i}(t),b_{s,i}(t)\}$
-
-The scheduling policy in the $t$-th frame is defined by $\mathbf{\Omega}(\mathbf{S}_{t})=\{p_{i,k}^{\mathrm{Tr}}(t),d_{s,i,k}\}$
-
-The cost function in the $t$-th frame is given by
+\textbf{System State.}
 \begin{align}
-	g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))=\sum_{i}|\mathcal{U}_{i}(t)|+\omega_{\mathrm{p}}\bigg(\sum_{i}p_{i,k}^{\mathrm{Tr}}(t)+\sum_{s}p_{s}(t)\bigg)
+    \Stat(t) \define 
+    \Paren{
+        %FIXME: real system state
+        % \rho_{i,j,k}, h_{i,j,k}(t),
+        Q_{k}^{\mathrm{Tr}}(t),
+        Q_{k}^{\mathrm{B}}(t),
+        Q_{k}^{\mathrm{C}}(t)
+        % a_{s,i}(t),b_{s,i}(t)
+    }
 \end{align}
 
+\textbf{Action Space.}
 \begin{align}
-	\bar{G}(\mathbf{S},\mathbf{\Omega})=\lim_{T\to\infty}\mathbb{E}_{\{\mathbf{S}_{t}^{\mathrm{N}},\mathcal{H}_{\mathrm{E}}(t)|\forall t\}}\left[\sum_{t=1}^{T}\gamma^{t-1}g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))|\mathbf{S}_{1}=\mathbf{S}\right]
+    \Policy(\Stat(t)) \define \set{
+        %FIXME: real action space
+        % p_{i,k}^{\mathrm{Tr}}(t), d_{s,i,k}
+    }
 \end{align}
 
+\textbf{Cost Function.}
 \begin{align}
-	\mathbf{\Omega}^{*}=\mathop{\arg\min}_{\mathbf{\Omega}}\bar{G}(\mathbf{S},\mathbf{\Omega})
+    g\Paren{\Stat(t), \Policy(\Stat(t))} =
+        \sum_{k\in\mathcal{K}} |\mathcal{U}_{k}(t)| +
+        \omega_{p} \Paren{
+            \sum_{k\in\mathcal{K}}\sum_{n=1}^{|\mathcal{U}_{k}(t)|} P_{n,k}^{\mathrm{Tr}}(t) + \sum_{m\in\mathcal{M}} P_{s}(t)
+        }
 \end{align}
 
+\textbf{Optimization Problem.}
 \begin{align}
-	V(\mathbf{S}_{t})=\min_{\mathbf{\Omega}(\mathbf{S}_{t})}\left[g(\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))+\sum_{\mathbf{S}_{t+1}}\gamma\Pr(\mathbf{S}_{t+1}|\mathbf{S}_{t},\mathbf{\Omega}(\mathbf{S}_{t}))V(\mathbf{S}_{t+1})\right]
+    \bar{G} (\Stat, \Policy) = \lim_{T\to\infty}
+    \Expect_{\set{\Stat(t)|\forall t}} \Bracket{
+        \sum_{t=1}^{T} \gamma^{t-1} g(\Stat(t), \Policy(\Stat(t))) | \Stat_1=\Stat
+    }
+\end{align}
+\begin{align}
+    \textbf{P1:~}
+    \Policy^* = \arg\min\limits_{\Policy} \bar{G}(\Stat, \Policy)
+\end{align}
+
+\textbf{Value Function.}
+\begin{align}
+    V(\Stat(t)) = \min_{\Policy(\Stat(t))} \Bracket{
+        g(\Stat(t), \Policy(\Stat(t))) +
+        \gamma \sum_{\Stat(t+1)} \Pr\Paren{\Stat(t+1) | \Stat(t), \Policy(\Stat(t))} \cdot V(\Stat(t+1))
+    }
 \end{align}

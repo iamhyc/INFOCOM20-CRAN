@@ -2,6 +2,12 @@
 \label{sec:model}
 
 %-----------------------------------------------------------------------------------------%
+\subsection{BBU Functional Split}
+\comments{
+    (Simply elaborate how and why we take such C-RAN implementation in 5G specification suggestion)
+}
+
+%-----------------------------------------------------------------------------------------%
 \subsection{Network Model}
 There are $K$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{K}=\set{1,\dots,K}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
 Each RRH servers the mobile devices (MDs) in a disjoint coverage from other RRHs which is denoted as $\mathcal{C}_{k}$, and has a fronthaul link to one edge cloud for further signal and data processing.
@@ -23,8 +29,8 @@ Futhermore, the status of the $n$-th task (BT or CT) in the region $\mathcal{C}_
 \begin{align}
     u_{n,k}(t) \define \Paren{
         \tilde{t}_{n}, \tilde{j}_{n}, \tilde{m}_{n}, \tilde{d}_{n}, D_{i,k}(t), F_{i,k}(t)
-    }
-\end{align},
+    },
+\end{align}%
 where:
 \begin{itemize}
     \item $\tilde{t}_{n}, \tilde{j}_{n}, \tilde{m}_{n}, \tilde{d}_{n}$ denotes the appearing time, job type, index of dispatched edge cloud and input data size (with the unit as bit) for the $n$-th task, respectively ($\tilde{j}_{n}\in\set{0}\cup\mathcal{J}$, $\tilde{m}_{n}\in\mathcal{M}$); $\tilde{d}_{n}$ follows uniform distribution between $d_{\tilde{j}_n,\min}$ and $d_{\tilde{j}_n,\max}$ ($\forall n \in \set{1, \dots, |\mathcal{U}_{k}(t)|}$);
@@ -42,9 +48,9 @@ Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{
 % Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived.
 
 %NOTE: How to upload, and how to evaluate VMB
-Let $\rho^{\mathrm{Tr}}_{k, n}(t)$ denote the indicator for whether the $n$-th task in the $k$-th cell is being selected for uploading or not.
+Let $\rho^{\mathrm{Tr}}_{k, n}(t)$ denote the indicator for whether the $n$-th task in the $k$-th cell is being selected for uploading or not, and $\vecG{\rho}^{\mathrm{Tr}}(t) \define \set{\rho^{\mathrm{Tr}}_{k, n}(t) | \forall k\in\mathcal{K},n\in\set{1,\dots,|\mathcal{U}_{k}(t)|}}$ denote .
 We assume that the MD and RRH are equipped with one antenna and $L$ antennas, respectively.
-The signal-to-interference-plus-noise ratio (SINR) between the $k$-RRH and the $n$-th user in the region $\mathcal{C}_{k}$ is denoted as
+The signal-to-interference-plus-noise ratio (SINR) and transmission rate $r_{k,n}(t)$ between the $k$-RRH and the $n$-th user in the region $\mathcal{C}_{k}$ are denoted as follows.
 \begin{align}
     \gamma_{n}(t) = \frac{
         \vecG{\theta}_{k,n}(t) \Inorm{h_{k,n,n'}(t)}^2
@@ -52,18 +58,17 @@ The signal-to-interference-plus-noise ratio (SINR) between the $k$-RRH and the $
         \sum_{n' \neq n} \vecG{\theta}_{k,n}(t) \Inorm{h_{k,n,n'}(t)}^2 + \sigma_{i}^{2}
     }
     % \gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},
-\end{align}
-where 
-Thus, the achievable rate for the $k$-th user is given by
-\begin{align}
-    r_{k}(t)= W\cdot \text{log}(1+\gamma_{k}(t)), \forall k,
-\end{align}
-where $W$ is the bandwidth.
-The dynamics of the $k$-th transmission queue is given by
-\begin{align}
-    Q_{k}^{\mathrm{Tr}}(t+1)=(Q_{k}^{\mathrm{Tr}}(t)-D_{k}^{\mathrm{Tr}}(t))^{+}
-\end{align}
-where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
+    \\
+    r_{k}(t)= W\cdot \text{log}(1+\gamma_{k}(t)),
+\end{align}%
+where $W$ is the pre-allocated bandwidth (with the unit as Hz).
+\fixit{
+    The dynamics of the $k$-th transmission queue is given by
+    \begin{align}
+        Q_{k}^{\mathrm{Tr}}(t+1)=(Q_{k}^{\mathrm{Tr}}(t)-D_{k}^{\mathrm{Tr}}(t))^{+}
+    \end{align}
+    where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
+}
 % Let ${U}_{i}(t)$ denote the existing tasks in the $i$-th cell in the $t$-th frame
 % \begin{align}
 %     \mathcal{U}_{i}(t+1)= \mathcal{U}_{i}(t)\cup\{n_{i,t}\}/\mathcal{D}_{i}(t).
@@ -90,36 +95,19 @@ The buffer at each active device stores the data packets to be transmitted to it
 
 There are two buffers in the edge cloud for each active device. One is the buffer of vBBU pool for communication computation (measured in packets) and the other is the buffer of vMES for service computation (measured in frames), which are denoted as $Q_{k}^{\mathrm{B}}(t)$ and $Q_{k}^{\mathrm{C}}(t)$ respectively.
 
-As in \needref{6582405} and \needref{8353131}, we assume that each server creates $M$ containers and the limited computation capacity of each server is fairly allocated to its hosted containers each with computation resource $f$. The $i$-th container on each server can only perform communication computation or service computation for the tasks of the $i$-th cell. Let the $(s,i)$-th container denotes the $i$-th container on the $s$-th server. The $(s,i)$-th container can be either $\textit{running}$ state or $\textit{shutdown}$ state. When the $(s,i)$-th container is running in a certain frame, it can perform either communication computation or service computation for one certain task of the $i$-th cell. Denote $a_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is $\textit{running}$ state for the communication task of the $k$-th task and is $0$ otherwise. Denote $b_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is starting to $\textit{running}$ state for service computation of the $k$-th task and $0$ otherwise. As in \cite{}, we assume that the service computation of each task need to be performed in consecutive frames and introduce the binary state $b_{s,i,k}^{-}(t)$ which indicates that the $(s,i)$-th container is still $\textit{running}$ state before the $t$-th frame and $0$ otherwise. Therefore, once $b_{s,i,k}(t)=1$, then $b_{s,i,k}^{-}(t+\tau)=1$, $\tau=1,\ldots,F_{k}-1$.
-
-\begin{align}
-    b_{s,i,k}(t)=
-    \begin{cases}
-        1 &Q_{k}^{\mathrm{Tr}}(t)=0,Q_{k}^{\mathrm{B}}(t)=0,b_{s,i,k}^{-}(t)=0,\text{and container is running state,}\\
-        0 &\text{otherwise}.
-    \end{cases}
-\end{align}
-
-Denote $D_{k}^{\mathrm{B}}(t)$ as the number of packets departing from queue of communication computation which can be given by
-\begin{align}
-    D_{k}^{\mathrm{B}}(t)=\left\lfloor\frac{T_{\mathrm{f}}f}{\beta^{\mathrm{B}}N_{\mathrm{b}}}\right\rfloor,
-\end{align}
-
-Then the queue dynamics are represented as
-\begin{align}
-    Q_{k}^{\mathrm{B}}(t+1)=(Q_{k}^{\mathrm{B}}(t)-\sum_{s}a_{s,i,k}D_{k}^{\mathrm{B}}(t))^{+}+D_{k}^{\mathrm{Tr}}(t),
-\end{align}
-\begin{align}
-    Q_{k}^{\mathrm{C}}(t+1)=Q_{k}^{\mathrm{C}}(t)-\sum_{s}(b_{s,i,k}(t)+b_{s,i,k}^{-}(t)).
-\end{align}
-
-The normalized power consumption of $s$-th physical machine is given by
-\begin{align}
-    P_{s}(t)= \alpha\left(\frac{\sum_{i}a_{s,i}(t)}{N}\right)^{v}+(1-\alpha)
-\end{align}
-where $\alpha\in[0,1]$ and $(1-\alpha)$ denotes the normalized power consumption in the idle state for each server.
-
-When both communication computation and service computation of a task is finished, the mobile device becomes $\textit{inactive}$, i.e.,
-\begin{align}
-    k\in\mathcal{D}_{i}(t),\text{if }Q_{k}^{\mathrm{X}}(t)=0,\mathrm{X}=\mathrm{Tr},\mathrm{B},\mathrm{C}.
-\end{align}
+Without loss of generality, we assume the $M$ edge clouds are homogeneous to each other and denote the total computation capacity (i.e., the capacity of carring out general operations in each frame) as $1.0$.
+\fixit{%FIXME: the power model
+    Denote $a_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is $\textit{running}$ state for the communication task of the $k$-th task and is $0$ otherwise.
+    Denote $b_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is starting to $\textit{running}$ state for service computation of the $k$-th task and $0$ otherwise.
+    Furthermore, we introduce the binary state $b_{s,i,k}^{-}(t)$ which indicates that the $(s,i)$-th container is still $\textit{running}$ state before the $t$-th frame and $0$ otherwise.
+    Therefore, once $b_{s,i,k}(t)=1$, then $b_{s,i,k}^{-}(t+\tau)=1$, $\tau=1,\ldots,F_{k}-1$.
+    Denote $D_{k}^{\mathrm{B}}(t)$ as the number of packets departing from queue of communication computation which can be given by
+    \begin{align}
+        D_{k}^{\mathrm{B}}(t)=\left\lfloor\frac{T_{\mathrm{f}}f}{\beta^{\mathrm{B}}N_{\mathrm{b}}}\right\rfloor,
+    \end{align}
+    The normalized power consumption of $s$-th physical machine is given by
+    \begin{align}
+        P_{s}(t)= \alpha\left(\frac{\sum_{i}a_{s,i}(t)}{N}\right)^{v}+(1-\alpha),
+    \end{align}
+    where $\alpha\in[0,1]$ and $(1-\alpha)$ denotes the normalized power consumption in the idle state for each server.
+}

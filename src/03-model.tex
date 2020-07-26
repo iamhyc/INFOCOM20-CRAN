@@ -19,7 +19,7 @@ At each frame, there would be at most one MD in the region $\mathcal{C}_{k}$ bei
 The uploaded data would be categorized into two kinds of tasks uploaded from users: baseband/basic task (BT) and computation task (CT).
 A BT is completed after VMB processing and needs no VMC processing, whose average arrival rate is denoted as $\lambda_{k,0}$ in the region $\mathcal{C}_{k}$;
 a type-$j$ CT requires tandem processing of VMB and the corresponding VMC, whose average arrival rate is denotes as $\lambda_{k,j}$ in the region $\mathcal{C}_{k}$ ($\forall k\in\mathcal{K}, j\in\mathcal{J}$).
-Futhermore, the status of the $n$-th task (DT or CT) in the region $\mathcal{C}_{k}$ in the $t$-th frame is denoted as follows.
+Futhermore, the status of the $n$-th task (BT or CT) in the region $\mathcal{C}_{k}$ in the $t$-th frame is denoted as follows.
 \begin{align}
     u_{n,k}(t) \define \Paren{
         \tilde{t}_{n}, \tilde{j}_{n}, \tilde{m}_{n}, \tilde{d}_{n}, D_{i,k}(t), F_{i,k}(t)
@@ -43,13 +43,12 @@ Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{
 % If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
 
 % 
-Let $\rho_{i,\tau}(t)$ denotes the indicator for whether the task appeared in the $\tau$-th frame in the $i$-th cell is in uploading or not.
-%FIXME: integrate uploading with above indicator
-For uplink transmission, the received signal at the $i$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
+Let $\rho_{k, n}(t)$ denote the indicator for whether the $n$-th task in the $k$-th cell is being selected for uploading or not.
+For uplink transmission, the received signal at the $k$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
 \begin{align}
     y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
 \end{align}
-where $\sqrt{\rho_{j,i,k}}$ denotes the pathloss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
+where $\sqrt{\rho_{j,i,k}}$ denotes the path-loss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
 Then the signal-to-interference-plus-noise ratio (SINR) can be expressed by
 \begin{align}
     \gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},

@@ -5,12 +5,16 @@
 \subsection{Network Model}
 There are $K$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{K}=\set{1,\dots,K}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
 Each RRH servers the mobile devices (MDs) in a disjoint coverage from other RRHs which is denoted as $\mathcal{C}_{k}$, and has a fronthaul link to one edge cloud for further signal and data processing.
-Furthermore, we assume that each edge cloud is deployed in a Function-as-a-Service (FaaS) manner, where \commnets{finite of service FaaS does not requre any server process constantly being run}.
-The function of Baseband Unit (BBU) for RRH and the other fixed $J$ types of functions
+% Furthermore, we assume that each edge cloud is deployed in a Function-as-a-Service (FaaS) manner, where \comments{no constantly running server processes are required}.
+A set of virtual machines (VMs) are deployed in each edge cloud which is consist of the VM for baseband unit (BBU) functions (VMB) and the VMs for other computation tasks (VMC).
+It's assumed that there are fixed $J$ types of computation tasks supported in the edge cloud which is denoted as $\mathcal{J}=\set{1,\dots,J}$ and the VM for the type-$j$ job in the $m$-th edge cloud is denoted as $V_{m,j}$.
+Specifically, there is one and only one VM for BBU functions which is denoted as $V_{m,0}$ ($\forall m\in\mathcal{M},j\in\mathcal{J}$).
+% A set of \emph{function handlers} (FHs) are deployed in each edge cloud which includes the FH $V_{0}$ for functions of Baseband Unit (BBU) and the FHs for other $J$ types of computation tasks which are denoted as $V_{j}$ ($\forall j\in\set{1,\dots,J}$).
 
 % The time axis of dispatching is organized by time slots.
 The system is scheduled with the minimum time unit called \emph{frame}.
-In the $t$-th frame, there could be at most one MD in $\mathcal{C}_{i}$ starting to transmit data via the $i$-th RRH to edge clouds $\mathcal{M}$ for further processing.
+In the $t$-th frame, there could be at most one MD in $\mathcal{C}_{k}$ being selected for data transmission via the $k$-th RRH to one edge cloud for further data processing.
+Furthermore, the types of data according to the 
 There are two types of data which would incur two types of tasks, respectively, in the system.
 One is called data task (DT), $\dots$, whose average arrival rate is denoted as $\lambda_{0}$.
 The other is called computation task (CT), $\dots$, whose average arrival rate is denoted as $\lambda_{j}, \forall j\in\mathcal{J}, \mathcal{J} \define \set{1,\dots,j}$. 

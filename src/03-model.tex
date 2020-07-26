@@ -40,19 +40,20 @@ Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{
 % where $\lambda(\mathbf{l})$ is the probability density of the active device arrived in arbitrary location in the cell region $\mathbf{l}\in\mathcal{C}_{i}$ and $\int_{\mathcal{C}_{i}}\lambda(\mathbf{l})ds(\mathbf{l})=1$.
 % It is assumed that the location of each active device is quasi-static during the period from it arrives to it completes the uplink transmission of the whole task. The active device becomes \textit{inactive} once the edge cloud finishes computing the whole task. Moreover, due to the small data size of the computation output, the downlink latency of the computation output is ignored.
 % Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived.
-% If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
 
-% 
-Let $\rho_{k, n}(t)$ denote the indicator for whether the $n$-th task in the $k$-th cell is being selected for uploading or not.
-For uplink transmission, the received signal at the $k$-th RRH from the $n_{i,t}$-th user after receive beamforming is given by
+%NOTE: How to upload, and how to evaluate VMB
+Let $\rho^{\mathrm{Tr}}_{k, n}(t)$ denote the indicator for whether the $n$-th task in the $k$-th cell is being selected for uploading or not.
+We assume that the MD and RRH are equipped with one antenna and $L$ antennas, respectively.
+The signal-to-interference-plus-noise ratio (SINR) between the $k$-RRH and the $n$-th user in the region $\mathcal{C}_{k}$ is denoted as
 \begin{align}
-    y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
+    \gamma_{n}(t) = \frac{
+        \vecG{\theta}_{k,n}(t) \Inorm{h_{k,n,n'}(t)}^2
+    }{
+        \sum_{n' \neq n} \vecG{\theta}_{k,n}(t) \Inorm{h_{k,n,n'}(t)}^2 + \sigma_{i}^{2}
+    }
+    % \gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},
 \end{align}
-where $\sqrt{\rho_{j,i,k}}$ denotes the path-loss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
-Then the signal-to-interference-plus-noise ratio (SINR) can be expressed by
-\begin{align}
-    \gamma_{k}(t)=\frac{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}|h_{i,i,k}(t)|^2}{\sum_{(j,m)\neq (i,k)}p_{j,m}^{\mathrm{Tr}}\rho_{i,j,m}|h_{i,j,m}(t)|^{2}+\sigma_{i}^{2}},
-\end{align}
+where 
 Thus, the achievable rate for the $k$-th user is given by
 \begin{align}
     r_{k}(t)= W\cdot \text{log}(1+\gamma_{k}(t)), \forall k,
@@ -63,12 +64,19 @@ The dynamics of the $k$-th transmission queue is given by
     Q_{k}^{\mathrm{Tr}}(t+1)=(Q_{k}^{\mathrm{Tr}}(t)-D_{k}^{\mathrm{Tr}}(t))^{+}
 \end{align}
 where $D_{k}^{\mathrm{Tr}}(t)=T_{\mathrm{f}}r_{k}(t)$.
-Let ${U}_{i}(t)$ denote the existing tasks in the $i$-th cell in the $t$-th frame
-\begin{align}
-    \mathcal{U}_{i}(t+1)= \mathcal{U}_{i}(t)\cup\{n_{i,t}\}/\mathcal{D}_{i}(t).
-\end{align}
+% Let ${U}_{i}(t)$ denote the existing tasks in the $i$-th cell in the $t$-th frame
+% \begin{align}
+%     \mathcal{U}_{i}(t+1)= \mathcal{U}_{i}(t)\cup\{n_{i,t}\}/\mathcal{D}_{i}(t).
+% \end{align}
+\comments{
+    For uplink transmission, the received signal from the $n$-th user in the regin $C_{k}$ at the $t$-th frame after receiving beamforming is given by
+    \begin{align}
+        y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
+    \end{align}
+    where $\sqrt{\rho_{j,i,k}}$ denotes the path-loss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
+}
 
-\subsection{Task Computing Models}
+\subsection{Computation and Power Consumption Models}
 Each new active device has a computation-intensive task which needs to be transmitted to the edge cloud for computation. It is assumed that the task of the $k$-th new active device is represented as $u_{k}=(F_{k},D_{k})$, where $F_{k}$ denotes the total number of frames to be completed and $D_{k}$ denotes the total data size of the task input.
 
 The queueing model is illustrated in Fig.1.

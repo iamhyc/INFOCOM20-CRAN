@@ -1,19 +1,14 @@
 \documentclass[journal, 12pt, onecolumn, draftclsnofoot]{IEEEtran}
 % \documentclass[10pt,conference]{IEEEtran} %INFOCOM 20'
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsmath}
+\usepackage{extarrows}
 \usepackage[linesnumbered,vlined,ruled]{algorithm2e}
 \usepackage{algorithmic}
-\usepackage{amsthm}
-\usepackage{array}
-\usepackage[usenames]{color}
-\usepackage{epsfig}
-\usepackage{epstopdf}
-\usepackage{extarrows}
-\usepackage{graphicx} 
-\usepackage{graphics}
-\usepackage{amsmath,amsfonts,amssymb,mathrsfs}
+\usepackage{etoolbox}
+\usepackage{cite}
+% \usepackage[noend]{algpseudocode}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{amsmath,amsthm,amssymb,amsfonts,mathrsfs}
 \usepackage{mathtools}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{dcolumn}
@@ -21,7 +16,7 @@
 \usepackage{soul}
 \usepackage{array}
 \usepackage{tabulary}
-\graphicspath{ {./images/} }
+\usepackage{enumitem}
 
 \newcommand{\revise}{\color{black}}
 \newcommand{\revisesec}{\color{blue}}
@@ -103,7 +98,7 @@
 
 	% \input{src/99-appendix.tex}
 	\bibliographystyle{IEEEtran}
-	% \bibliography{reference/related.bib}
+	\bibliography{references/related.bib}
 	% \input{src/100-biography.tex}
 
 \end{document}

@@ -3,9 +3,10 @@
 
 %-----------------------------------------------------------------------------------------%
 \subsection{Network Model}
-There are $I$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{I}=\set{1,\dots,I}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
-Each serves the mobile devices (MDs) in its coverage denoted as $\mathcal{C}_{i}$ and has a fronthaul connection to one virtualized BBU (vBBU) in one edge cloud.
-Furthermore, we assume that each edge cloud consists of fixed $N$ virtual machines (VMs).
+There are $K$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{K}=\set{1,\dots,K}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
+Each RRH servers the mobile devices (MDs) in a disjoint coverage from other RRHs which is denoted as $\mathcal{C}_{k}$, and has a fronthaul link to one edge cloud for further signal and data processing.
+Furthermore, we assume that each edge cloud is deployed in a Function-as-a-Service (FaaS) manner, where \commnets{finite of service FaaS does not requre any server process constantly being run}.
+The function of Baseband Unit (BBU) for RRH and the other fixed $J$ types of functions
 
 % The time axis of dispatching is organized by time slots.
 The system is scheduled with the minimum time unit called \emph{frame}.
@@ -23,7 +24,11 @@ The other is called computation task (CT), $\dots$, whose average arrival rate i
 % where $\lambda(\mathbf{l})$ is the probability density of the active device arrived in arbitrary location in the cell region $\mathbf{l}\in\mathcal{C}_{i}$ and $\int_{\mathcal{C}_{i}}\lambda(\mathbf{l})ds(\mathbf{l})=1$. It is assumed that the location of each active device is quasi-static during the period from it arrives to it completes the uplink transmission of the whole task. The active device becomes \textit{inactive} once the edge cloud finishes computing the whole task. Moreover, due to the small data size of the computation output, the downlink latency of the computation output is ignored.
 % Let $\mathcal{U}_{i}(t)$ be the set of active devices in the $i$-th cell in $t$-th frame, $\mathcal{D}_{i}(t)\subset\mathcal{U}_{i}(t)$ be the subsets of the active devices whose tasks are just accomplished at the edge cloud in the $t$-th frame, and $n_{i,t}$ be the index of the new active device in the $i$-th cell arrived at the beginning of the $t$-the frame. Therefore, every active device is assigned with a unique index associated with the cell index and frame index it arrived.
 % If there is no new active device arrived at the beginning of the $t$-th frame, then $n_{i,t}=\emptyset$. Therefore, the dynamics of the active devices can be represented as
-The incurred type-$j$ task in the $i$-th cell in the $t$-th frame is described generally by a tuple $u_{i}(t) \define \big( j(t), D_{i}(t), F_{i}(t) \big)$, where $j(t)$ denotes the job type, $D_{i}(t)$ denotes the input data bits and $F_{i}(t)$ denotes the \emph{deterministic} computation time on the vMESs.
+The incurred type-$j$ task in the $i$-th cell in the $t$-th frame is denoted via
+\begin{align}
+	u_{i}(t) \define \big( t_{k}, j_{k}, D_{i,k}(t), F_{i,k}(t) \big)	
+\end{align}
+, where $j(t)$ denotes the job type, $D_{i}(t)$ denotes the input data bits and $F_{i}(t)$ denotes the \emph{deterministic} computation time on the vMESs.
 Specifically, the computation time for type-$0$ job (i.e., a data task) has $F_{i}(t)=0$ ($\forall t$).
 
 Let $\rho_{i,\tau}(t)$ denotes the indicator for whether the task appeared in the $\tau$-th frame in the $i$-th cell is in uploading or not.

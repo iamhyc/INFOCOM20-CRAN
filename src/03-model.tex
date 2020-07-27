@@ -96,6 +96,8 @@ The buffer at each active device stores the data packets to be transmitted to it
 There are two buffers in the edge cloud for each active device. One is the buffer of vBBU pool for communication computation (measured in packets) and the other is the buffer of vMES for service computation (measured in frames), which are denoted as $Q_{k}^{\mathrm{B}}(t)$ and $Q_{k}^{\mathrm{C}}(t)$ respectively.
 
 Without loss of generality, we assume the $M$ edge clouds are homogeneous to each other and denote the total computation capacity (i.e., the capacity of carring out general operations in each frame) as $1.0$.
+The computation scheduling among VMs is implemented via simple \emph{smooth weighted round robin} \needref{nignx load balancing}.
+% The VMBs and VMCs are deployed under \emph{serverless framework} which is in catering to unique characteristics of such applications: burstiness, short and variable execution times.
 \fixit{%FIXME: the power model
     Denote $a_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is $\textit{running}$ state for the communication task of the $k$-th task and is $0$ otherwise.
     Denote $b_{s,i,k}(t)$ as the binary decision which is $1$ if the $(s,i)$-th container is starting to $\textit{running}$ state for service computation of the $k$-th task and $0$ otherwise.
@@ -110,4 +112,4 @@ Without loss of generality, we assume the $M$ edge clouds are homogeneous to eac
         P_{s}(t)= \alpha\left(\frac{\sum_{i}a_{s,i}(t)}{N}\right)^{v}+(1-\alpha),
     \end{align}
     where $\alpha\in[0,1]$ and $(1-\alpha)$ denotes the normalized power consumption in the idle state for each server.
-}
+}%

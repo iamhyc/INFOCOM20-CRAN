@@ -79,7 +79,7 @@ where $W$ is the pre-allocated bandwidth (with the unit as Hz).
         y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
     \end{align}
     where $\sqrt{\rho_{j,i,k}}$ denotes the path-loss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
-}
+}%
 
 \subsection{Computation and Power Consumption Models}
 Each new active device has a computation-intensive task which needs to be transmitted to the edge cloud for computation. It is assumed that the task of the $k$-th new active device is represented as $u_{k}=(F_{k},D_{k})$, where $F_{k}$ denotes the total number of frames to be completed and $D_{k}$ denotes the total data size of the task input.
@@ -95,7 +95,7 @@ The buffer at each active device stores the data packets to be transmitted to it
 
 There are two buffers in the edge cloud for each active device. One is the buffer of vBBU pool for communication computation (measured in packets) and the other is the buffer of vMES for service computation (measured in frames), which are denoted as $Q_{k}^{\mathrm{B}}(t)$ and $Q_{k}^{\mathrm{C}}(t)$ respectively.
 
-Without loss of generality, we assume the $M$ edge clouds are homogeneous to each other and denote the total computation capacity (i.e., the capacity of carring out general operations in each frame) as $1.0$.
+Without loss of generality, we assume the $M$ edge clouds are homogeneous to each other and denote the total computation capacity (i.e., the capacity of carrying out general operations in each frame) as $1.0$.
 The computation scheduling among VMs is implemented via simple \emph{smooth weighted round robin} \needref{nignx load balancing}.
 % The VMBs and VMCs are deployed under \emph{serverless framework} which is in catering to unique characteristics of such applications: burstiness, short and variable execution times.
 \fixit{%FIXME: the power model

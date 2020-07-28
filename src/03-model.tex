@@ -2,12 +2,6 @@
 \label{sec:model}
 
 %-----------------------------------------------------------------------------------------%
-\subsection{BBU Functional Split}
-\comments{
-    (Simply elaborate how and why we take such C-RAN implementation in 5G specification suggestion)
-}
-
-%-----------------------------------------------------------------------------------------%
 \subsection{Network Model}
 There are $K$ RRHs and $M$ edge clouds considered in our network which are denoted as $\mathcal{K}=\set{1,\dots,K}$ and $\mathcal{M}=\set{1,\dots,M}$, respectively.
 Each RRH servers the mobile devices (MDs) in a disjoint coverage from other RRHs which is denoted as $\mathcal{C}_{k}$, and has a fronthaul link to one edge cloud for further signal and data processing.
@@ -81,12 +75,16 @@ where $W$ is the pre-allocated bandwidth (with the unit as Hz).
     where $\sqrt{\rho_{j,i,k}}$ denotes the path-loss from the $(i,k)$-th user to the $j$-th RRH, $h_{j,i,k}(t)\sim \mathcal{CN}(0,\sigma_{j,i,k}^{2})$ denotes the channel gain from the $j$-th RRH to the $(i,k)$-th user.
 }%
 
+%-----------------------------------------------------------------------------------------%
 \subsection{Computation and Power Consumption Models}
 \comments{
     While existing serverless load-balance schedulers assigned incoming function invocations to individual servers for execution, we argue that we could establish queues for same types of function invocations and dynamically allocate computation resource (running time) among them to avoid initialization call overhead.
     The \emph{resource scaling raito} is implemented via allocate CPU affinity to specific types of tasks.
     Furthermore, we consider the job arrival and departure in burst and thus the resource re-allocation would only affect the queueing tasks but not the running tasks.
+    For example, 80\% CPUs affinity are set to VMC and remaining 20\% CPUs affinity are set to VMB, however each function invocation of VMB or VMC is running on single CPU.
+    And internall on each clusters of CPUs, the underlaid operating system functions the default scheduling algorithm,e e.g., round-robin, first-come-first-serve, shortest-job-first and etc.
 }%
+\fixit{Existing serverless platforms isolate and execute functions in separate containers, and do not exploit the interactions among serverless computing system that provides lower latency. These practices lead t o high startup delays for function executions and inefficient resource usage.}
 Each new active device has a computation-intensive task which needs to be transmitted to the edge cloud for computation. It is assumed that the task of the $k$-th new active device is represented as $u_{k}=(F_{k},D_{k})$, where $F_{k}$ denotes the total number of frames to be completed and $D_{k}$ denotes the total data size of the task input.
 
 The queueing model is illustrated in Fig.1.

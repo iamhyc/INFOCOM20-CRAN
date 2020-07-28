@@ -73,7 +73,7 @@ where $W$ is the pre-allocated bandwidth (with the unit as Hz).
 % \begin{align}
 %     \mathcal{U}_{i}(t+1)= \mathcal{U}_{i}(t)\cup\{n_{i,t}\}/\mathcal{D}_{i}(t).
 % \end{align}
-\comments{
+\deny{
     For uplink transmission, the received signal from the $n$-th user in the regin $C_{k}$ at the $t$-th frame after receiving beamforming is given by
     \begin{align}
         y_{i}(t) = \sqrt{p_{i,k}^{\mathrm{Tr}}(t)\rho_{i,i,k}}h_{i,i,k}(t)x_{i,k}(t)+\sum_{(j,m)\neq (i,k)}\sqrt{p_{j,m}^{\mathrm{Tr}}(t)\rho_{i,j,m}}h_{i,j,m}(t)x_{j,m}(t)+z_{i}(t)
@@ -82,6 +82,11 @@ where $W$ is the pre-allocated bandwidth (with the unit as Hz).
 }%
 
 \subsection{Computation and Power Consumption Models}
+\comments{
+    While existing serverless load-balance schedulers assigned incoming function invocations to individual servers for execution, we argue that we could establish queues for same types of function invocations and dynamically allocate computation resource (running time) among them to avoid initialization call overhead.
+    The \emph{resource scaling raito} is implemented via allocate CPU affinity to specific types of tasks.
+    Furthermore, we consider the job arrival and departure in burst and thus the resource re-allocation would only affect the queueing tasks but not the running tasks.
+}%
 Each new active device has a computation-intensive task which needs to be transmitted to the edge cloud for computation. It is assumed that the task of the $k$-th new active device is represented as $u_{k}=(F_{k},D_{k})$, where $F_{k}$ denotes the total number of frames to be completed and $D_{k}$ denotes the total data size of the task input.
 
 The queueing model is illustrated in Fig.1.
